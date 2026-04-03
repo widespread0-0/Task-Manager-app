@@ -3,267 +3,130 @@
 <head>
   <title>Task Manager</title>
 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     :root {
-      --primary-color: #4a90e2;
-      --secondary-color: #f39c12;
-      --background-color: #f8f9fa;
-      --card-color: #ffffff;
-      --text-color: #333333;
-      --completed-color: #6c757d;
-      --border-radius: 12px;
-      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --primary: #4a90e2;
+      --bg: #f5f7fb;
+      --card: #ffffff;
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, var(--background-color) 0%, #e9ecef 100%);
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg);
       margin: 0;
       padding: 20px;
-      min-height: 100vh;
-      color: var(--text-color);
     }
 
     .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: var(--card-color);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-      padding: 30px;
-      margin-top: 20px;
+      max-width: 700px;
+      margin: auto;
+      background: var(--card);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
 
     h1 {
       text-align: center;
-      color: var(--primary-color);
-      margin-bottom: 30px;
-      font-size: 2.5em;
-      font-weight: 300;
+      color: var(--primary);
     }
 
     .input-group {
       display: flex;
       gap: 10px;
-      margin-bottom: 20px;
-      justify-content: center;
       flex-wrap: wrap;
-    }
-
-    #dueDateInput {
-      padding: 12px 16px;
-      border: 2px solid #e1e5e9;
-      border-radius: var(--border-radius);
-      font-size: 16px;
-      transition: border-color 0.3s ease;
-      background: white;
-    }
-
-    #dueDateInput:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+      margin-bottom: 20px;
     }
 
     input {
-      padding: 12px 16px;
-      width: 100%;
-      max-width: 300px;
-      border: 2px solid #e1e5e9;
-      border-radius: var(--border-radius);
-      font-size: 16px;
-      transition: border-color 0.3s ease;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      flex: 1;
     }
 
     button {
-      padding: 12px 20px;
-      cursor: pointer;
+      padding: 10px;
       border: none;
-      border-radius: var(--border-radius);
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      cursor: pointer;
     }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    }
-
-    .add-btn {
-      background: linear-gradient(135deg, var(--primary-color), #357abd);
-      color: white;
-    }
-
-    .add-btn:hover {
-      background: linear-gradient(135deg, #357abd, var(--primary-color));
-    }
-
-    .filter-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-    }
-
-    .filter-btn {
-      background: var(--secondary-color);
-      color: white;
-      min-width: 100px;
-    }
-
-    .filter-btn:hover {
-      background: #e67e22;
-    }
-
-    .filter-btn.active {
-      background: #e74c3c;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
-    }
-
-    #taskList {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
+    .add-btn { background: var(--primary); color: white; }
+    .complete { background: #28a745; color: white; }
+    .edit { background: #ffc107; }
+    .delete { background: #dc3545; color: white; }
 
     .task {
-      background: var(--card-color);
-      margin-bottom: 15px;
-      padding: 20px;
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      transition: all 0.3s ease;
-      border-left: 4px solid var(--primary-color);
-    }
-
-    .task:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      background: #eee;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
 
     .task.completed {
-      border-left-color: var(--completed-color);
-      opacity: 0.7;
-    }
-
-    .task-content {
-      flex-grow: 1;
-      margin-right: 15px;
-    }
-
-    .task-text {
-      font-size: 18px;
-      margin-bottom: 5px;
-    }
-
-    .task.completed .task-text {
+      opacity: 0.6;
       text-decoration: line-through;
-      color: var(--completed-color);
     }
 
-    .task-date {
-      font-size: 12px;
-      color: #6c757d;
-      margin-bottom: 5px;
+    .overdue {
+      color: red;
+      font-weight: bold;
     }
 
-    .task-due-date {
-      font-size: 12px;
-      font-weight: 500;
-      padding: 4px 8px;
-      border-radius: 6px;
-      display: inline-block;
-      margin-top: 5px;
+    .actions button {
+      margin-left: 5px;
     }
 
-    .due-date-upcoming {
-      background: #fff3cd;
-      color: #856404;
-      border: 1px solid #ffeaa7;
+    .filters {
+      text-align: center;
+      margin-bottom: 15px;
     }
 
-    .due-date-overdue {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
+    /* MODAL */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
     }
 
-    .due-date-completed {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
+    .modal-content {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
     }
 
-    .task-actions {
-      display: flex;
-      gap: 8px;
+    .modal-content input {
+      width: 100%;
+      margin-bottom: 10px;
     }
 
-    .task-actions button {
-      padding: 8px 12px;
-      font-size: 14px;
-      min-width: 40px;
-    }
-
-    .delete-btn {
-      background: #dc3545;
-      color: white;
-    }
-
-    .delete-btn:hover {
-      background: #c82333;
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 2em;
-      }
-
-      .input-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 8px;
-      }
-
-      input, #dueDateInput {
-        max-width: 100%;
-      }
-
-      .filter-buttons {
-        flex-direction: column;
-        gap: 8px;
-      }
-
-      .filter-btn {
-        min-width: auto;
-        width: 100%;
-      }
-
+    /* MOBILE */
+    @media (max-width: 600px) {
       .task {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
       }
 
-      .task-actions {
-        align-self: flex-end;
+      .actions {
+        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      input, button {
+        width: 100%;
       }
     }
   </style>
@@ -271,185 +134,137 @@
 
 <body>
 
-  <div class="container">
-    <h1>🚀 Task Manager</h1>
+<div class="container">
+  <h1>🚀 Task Manager</h1>
 
-    <!-- Add Task -->
-    <div class="input-group">
-      <input id="taskInput" placeholder="Enter a new task...">
-      <input type="datetime-local" id="dueDateInput" title="Set due date (optional)">
-      <button class="add-btn" onclick="addTask()">Add Task</button>
-    </div>
-
-    <!-- Filter Buttons -->
-    <div class="filter-buttons">
-      <button class="filter-btn active" onclick="loadTasks('all')" id="filter-all">All Tasks</button>
-      <button class="filter-btn" onclick="loadTasks('completed')" id="filter-completed">Completed</button>
-      <button class="filter-btn" onclick="loadTasks('pending')" id="filter-pending">Pending</button>
-    </div>
-
-    <ul id="taskList"></ul>
+  <div class="input-group">
+    <input id="taskInput" placeholder="Enter task">
+    <input type="datetime-local" id="dueDateInput">
+    <button class="add-btn" onclick="addTask()">Add</button>
   </div>
 
-  <script>
-    // Date utility functions
-    function formatDate(dateString) {
-      let date;
-      if (!dateString) return 'Unknown';
+  <div class="filters">
+    <button onclick="loadTasks('all')">All</button>
+    <button onclick="loadTasks('completed')">Completed</button>
+    <button onclick="loadTasks('pending')">Pending</button>
+  </div>
 
-      // If it's a timestamp string (taskid), convert it
-      if (/^\d+$/.test(dateString)) {
-        date = new Date(parseInt(dateString));
-      } else {
-        date = new Date(dateString);
-      }
+  <div id="taskList"></div>
+</div>
 
-      // Check if date is valid
-      if (isNaN(date.getTime())) return 'Unknown';
+<!-- ✨ MODAL -->
+<div id="editModal" class="modal">
+  <div class="modal-content">
+    <h3>Edit Task</h3>
+    <input id="editTaskInput">
+    <input type="datetime-local" id="editDateInput">
+    <button onclick="saveEdit()">Save</button>
+    <button onclick="closeModal()">Cancel</button>
+  </div>
+</div>
 
-      const now = new Date();
-      const diffMs = now - date;
-      const diffHours = diffMs / (1000 * 60 * 60);
-      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+<script>
+const API = "http://127.0.0.1:3000";
 
-      if (diffHours < 1) {
-        const minutes = Math.floor(diffMs / (1000 * 60));
-        return minutes <= 1 ? 'Just now' : `${minutes} minutes ago`;
-      } else if (diffHours < 24) {
-        const hours = Math.floor(diffHours);
-        return hours === 1 ? '1 hour ago' : `${hours} hours ago`;
-      } else if (diffDays < 7) {
-        const days = Math.floor(diffDays);
-        return days === 1 ? 'Yesterday' : `${days} days ago`;
-      } else {
-        return date.toLocaleDateString('en-US', {
-          year: 'numeric',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit'
-        });
-      }
-    }
+let currentEditId = null;
 
-    function formatDueDate(dueDateString, completed) {
-      if (!dueDateString) return null;
+async function addTask() {
+  const task = document.getElementById("taskInput").value;
+  const dueDate = document.getElementById("dueDateInput").value;
 
-      const dueDate = new Date(dueDateString);
-      const now = new Date();
+  if (!task) return alert("Enter a task");
 
-      if (completed) {
-        return {
-          text: `Completed ${formatDate(dueDateString)}`,
-          class: 'due-date-completed'
-        };
-      }
+  await fetch(API + "/add-task", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ task, dueDate })
+  });
 
-      const diffMs = dueDate - now;
-      const diffHours = diffMs / (1000 * 60 * 60);
-      const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  document.getElementById("taskInput").value = "";
+  document.getElementById("dueDateInput").value = "";
 
-      if (diffMs < 0) {
-        // Overdue
-        const overdueDays = Math.abs(Math.floor(diffDays));
-        const overdueHours = Math.abs(Math.floor(diffHours));
-        let text;
-        if (overdueDays > 0) {
-          text = overdueDays === 1 ? '1 day overdue' : `${overdueDays} days overdue`;
-        } else {
-          text = overdueHours === 1 ? '1 hour overdue' : `${overdueHours} hours overdue`;
-        }
-        return { text, class: 'due-date-overdue' };
-      } else if (diffHours < 24) {
-        // Due today
-        const hours = Math.floor(diffHours);
-        const text = hours === 0 ? 'Due now' : `Due in ${hours} hour${hours === 1 ? '' : 's'}`;
-        return { text, class: 'due-date-upcoming' };
-      } else {
-        // Future due date
-        const days = Math.floor(diffDays);
-        const text = days === 1 ? 'Due tomorrow' : `Due in ${days} days`;
-        return { text, class: 'due-date-upcoming' };
-      }
-    }
+  loadTasks();
+}
 
-    async function addTask() {
-      const task = document.getElementById("taskInput").value;
-      const dueDate = document.getElementById("dueDateInput").value;
+async function completeTask(id) {
+  await fetch(API + "/complete-task/" + id, { method: "PUT" });
+  loadTasks();
+}
 
-      if (!task) return alert("Enter a task!");
+async function deleteTask(id) {
+  await fetch(API + "/delete-task/" + id, { method: "DELETE" });
+  loadTasks();
+}
 
-      await fetch("http://localhost:3000/add-task", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ task, dueDate: dueDate || null })
-      });
+// OPEN MODAL
+function openEditModal(id, task, dueDate) {
+  currentEditId = id;
+  document.getElementById("editTaskInput").value = task;
+  document.getElementById("editDateInput").value = dueDate || "";
+  document.getElementById("editModal").style.display = "flex";
+}
 
-      document.getElementById("taskInput").value = "";
-      document.getElementById("dueDateInput").value = "";
-      loadTasks();
-    }
+// CLOSE MODAL
+function closeModal() {
+  document.getElementById("editModal").style.display = "none";
+}
 
-    async function completeTask(id) {
-      await fetch(`http://localhost:3000/complete-task/${id}`, {
-        method: "PUT"
-      });
+// SAVE EDIT
+async function saveEdit() {
+  const task = document.getElementById("editTaskInput").value;
+  const dueDate = document.getElementById("editDateInput").value;
 
-      loadTasks();
-    }
+  await fetch(API + "/edit-task/" + currentEditId, {
+    method: "PUT",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({ task, dueDate })
+  });
 
-    async function deleteTask(id) {
-      await fetch(`http://localhost:3000/delete-task/${id}`, {
-        method: "DELETE"
-      });
+  closeModal();
+  loadTasks();
+}
 
-      loadTasks();
-    }
+async function loadTasks(filter = "all") {
+  const res = await fetch(API + "/tasks");
+  let tasks = await res.json();
 
-    async function loadTasks(filter = "all") {
-      // Update active filter button
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(`filter-${filter}`).classList.add('active');
+  if (filter === "completed") tasks = tasks.filter(t => t.completed);
+  if (filter === "pending") tasks = tasks.filter(t => !t.completed);
 
-      const res = await fetch("http://localhost:3000/tasks");
-      let tasks = await res.json();
+  const list = document.getElementById("taskList");
+  list.innerHTML = "";
 
-      if (filter === "completed") {
-        tasks = tasks.filter(t => t.completed);
-      } else if (filter === "pending") {
-        tasks = tasks.filter(t => !t.completed);
-      }
+  tasks.forEach(t => {
+    const isOverdue =
+      t.dueDate &&
+      new Date(t.dueDate) < new Date() &&
+      !t.completed;
 
-      const list = document.getElementById("taskList");
-      list.innerHTML = "";
+    const div = document.createElement("div");
+    div.className = `task ${t.completed ? 'completed' : ''}`;
 
-      tasks.forEach(t => {
-        const li = document.createElement("li");
-        li.className = `task ${t.completed ? 'completed' : ''}`;
+    div.innerHTML = `
+      <div>
+        <div class="${isOverdue ? 'overdue' : ''}">${t.task}</div>
+        <small>
+          ${t.dueDate ? new Date(t.dueDate).toLocaleString() : ""}
+          ${isOverdue ? " ⚠️ Overdue!" : ""}
+        </small>
+      </div>
 
-        const dueDateInfo = formatDueDate(t.dueDate, t.completed);
-        const dueDateHtml = dueDateInfo ? `<div class="task-due-date ${dueDateInfo.class}">${dueDateInfo.text}</div>` : '';
+      <div class="actions">
+        <button class="complete" onclick="completeTask('${t.taskid}')">✔</button>
+        <button class="edit" onclick="openEditModal('${t.taskid}', '${t.task}', '${t.dueDate || ""}')">✏️</button>
+        <button class="delete" onclick="deleteTask('${t.taskid}')">🗑</button>
+      </div>
+    `;
 
-        li.innerHTML = `
-          <div class="task-content">
-            <div class="task-text">${t.task}</div>
-            <div class="task-date">Created ${formatDate(t.createdAt)}</div>
-            ${dueDateHtml}
-          </div>
-          <div class="task-actions">
-            <button class="complete-btn" onclick="completeTask('${t.taskid}')" title="Mark as complete">✓</button>
-            <button class="delete-btn" onclick="deleteTask('${t.taskid}')" title="Delete task">🗑️</button>
-          </div>
-        `;
+    list.appendChild(div);
+  });
+}
 
-        list.appendChild(li);
-      });
-    }
-
-    loadTasks();
-  </script>
+loadTasks();
+</script>
 
 </body>
 </html>
