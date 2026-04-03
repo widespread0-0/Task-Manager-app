@@ -11,7 +11,7 @@ app.use(express.json());
 // AWS Configuration
 AWS.config.update({
   region: "eu-north-1",
-
+  
 });
 
 // DynamoDB Client
@@ -76,8 +76,44 @@ app.put("/complete-task/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to update task" });
   }
 });
+// ✏️ EDIT TASK
+app.put("/edit-task/:id", async (req, res) => {
+  const taskid = req.params.id;
+  const { task, dueDate } = req.body;
 
-// 🗑️ DELETE TASK
+  const updateExpression = [];
+  const expressionAttributeValues = {};
+
+  if (task !== undefined) {
+    updateExpression.push("task = :t");
+    expressionAttributeValues[":t"] = task;
+  }
+
+  if (dueDate !== undefined) {
+    updateExpression.push("dueDate = :dd");
+    expressionAttributeValues[":dd"] = dueDate;
+  }
+
+  if (updateExpression.length === 0) {
+    return res.status(400).json({ error: "No fields to update" });
+  }
+
+  const params = {
+    TableName: "Tasks",
+    Key: { taskid: taskid },
+    UpdateExpression: "set " + updateExpression.join(", "),
+    ExpressionAttributeValues: expressionAttributeValues
+  };
+
+  try {
+    await dynamo.update(params).promise();
+    res.json({ message: "Task updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to update task" });
+  }
+});
+// DELETE TASK
 app.delete("/delete-task/:id", async (req, res) => {
   const taskid = req.params.id;
 
@@ -94,6 +130,7 @@ app.delete("/delete-task/:id", async (req, res) => {
     res.status(500).json({ error: "Failed to delete task" });
   }
 });
+
 
 // Test route
 app.get("/", (req, res) => {
