@@ -435,7 +435,7 @@
         li.innerHTML = `
           <div class="task-content">
             <div class="task-text">${t.task}</div>
-            <div class="task-date">Created ${formatDate(t.createdAt || t.taskid)}</div>
+            <div class="task-date">Created ${formatDate(t.createdAt)}</div>
             ${dueDateHtml}
           </div>
           <div class="task-actions">
